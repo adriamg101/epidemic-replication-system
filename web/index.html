@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Epidemic Replication Dashboard</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="app">
+    <header class="header">
+      <h1>Epidemic Replication Dashboard</h1>
+    </header>
+
+    <main>
+      <section class="file-panel">
+        <h2>Execute Commands</h2>
+        <div class="file-form">
+          <div class="file-input-group">
+            <label for="commands">Commands</label>
+            <textarea
+              id="commands"
+              v-model="fileContent"
+              placeholder="b, r(1), w(1,15), r(1), c&#10;b0, r(5), w(5,55), r(5), c&#10;b2, r(9), w(9,95), r(9), c"
+              class="input-textarea"
+              rows="5"
+            ></textarea>
+          </div>
+
+          <div class="file-actions">
+            <button class="btn-primary" @click="sendFile" :disabled="!canExecute">
+              <span v-if="executing">Executing…</span>
+              <span v-else>Execute</span>
+            </button>
+          </div>
+
+          <div v-if="configError" class="exec-error">
+            &#9888; {{ configError }}
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Server layers -->
+      <div class="layers">
+        <layer-section
+          v-for="layer in layers"
+          :key="layer.id"
+          :layer="layer"
+          :servers-data="serversData"
+        ></layer-section>
+      </div>
+    </main>
+  </div>
+
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
